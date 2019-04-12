@@ -1,0 +1,17 @@
+{
+  "name": "alphabetic-compare",
+  "version": "0.0.2",
+  "description": "Checks whether two strings are in alphabetical order, with support for natural sort and national quirks",
+  "main": "lib/index.js",
+  "repository": "git@github.com:m93a/alphabetic-compare.git",
+  "author": "m93a <m93a.cz@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "clone-deep": "^4.0.1"
+  },
+  "devDependencies": {
+    "@meta-utils/types": "^1.0.1",
+    "@types/clone-deep": "^4.0.1",
+    "typescript": "^3.4.1"
+  }
+}
