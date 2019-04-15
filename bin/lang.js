@@ -34,9 +34,14 @@ exports.__esModule = true;
 var en = {
     blocks: [
         {
+            order: 'ltr',
+            letters: [/^\s+/]
+        },
+        {
             order: 'numeric-ltr',
             letters: __spread('0123456789'),
-            decimalSeparator: /^\.(?=\d)/
+            decimalSeparator: /^\.(?=\d)/,
+            ignore: ','
         },
         {
             order: 'ltr',
@@ -46,8 +51,9 @@ var en = {
 };
 var cs = {
     blocks: [
-        __assign({}, en.blocks[0], { decimalSeparator: /^,(?=\d)/ }),
-        __assign({}, en.blocks[1], { letters: [
+        __assign({}, en.blocks[0]),
+        __assign({}, en.blocks[1], { decimalSeparator: /^,(?=\d)/, ignore: /^\s+/ }),
+        __assign({}, en.blocks[2], { letters: [
                 [/^a/i, /^á/i],
                 [/^b/i],
                 [/^c(?!h)/i, /^č/i],
@@ -78,5 +84,41 @@ var cs = {
             ] })
     ]
 };
-exports.lang = { en: en, cs: cs };
+var sk = {
+    blocks: [
+        cs.blocks[0],
+        cs.blocks[1],
+        __assign({}, cs.blocks[2], { letters: [
+                [/^a/i, /^á/i, /^ä/i],
+                [/^b/i],
+                [/^c(?!h)/i, /^č/i],
+                [/^d(?![zž])/i, /^ď/i],
+                [/^dz/i, /^dž/i],
+                [/^e/i, /^é/i],
+                [/^f/i],
+                [/^g/i],
+                [/^h/i],
+                [/^ch/i],
+                [/^i/i, /^í/i],
+                [/^j/i],
+                [/^k/i],
+                [/^l/i, /^ĺ/i, /^ľ/i],
+                [/^m/i],
+                [/^n/i, /^ň/i],
+                [/^o/i, /^ó/i, /^ô/i],
+                [/^p/i],
+                [/^q/i],
+                [/^r/i, /^ŕ/i],
+                [/^s/i, /^š/i],
+                [/^t/i, /^ť/i],
+                [/^u/i, /^ú/i],
+                [/^v/i],
+                [/^w/i],
+                [/^x/i],
+                [/^y/i, /^ý/i],
+                [/^z/i, /^ž/i],
+            ] })
+    ]
+};
+exports.lang = { en: en, cs: cs, sk: sk };
 //# sourceMappingURL=lang.js.map

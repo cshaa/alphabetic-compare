@@ -1,5 +1,5 @@
 
-type ISO_639_1 = 'en' | 'cs';
+type ISO_639_1 = 'en' | 'cs' | 'sk';
 
 interface Config
 {
@@ -7,7 +7,7 @@ interface Config
      * Should nulls (ie. letters that have no defined sorting) be sorted
      * above all entries (1), bellow all entries (-1), or ignored (0)?
      */
-    nullSorting: 0,
+    nullSorting: Comparison,
 
     /**
      * The ISO 639-1 code of the language that should be used for sorting.
@@ -30,8 +30,8 @@ interface Config
 type Comparison = -1 | 0 | 1;
 
 type Letter = string | RegExp;
-type Cluster = Letter | Letter[];
-type List = Cluster[];
+type Cluster = Letter | readonly Letter[];
+type List = readonly Cluster[];
 
 interface CommonBlock
 {
@@ -62,11 +62,11 @@ interface CustomBlock
     compareBlocks: (str1: string, str2: string) => -1 | 0 | 1;
 }
 
-type Block = NonNumericBlock | NumericBlock | CustomBlock;
+type _Block = NonNumericBlock | NumericBlock | CustomBlock;
 
-interface Sorting
+interface Sorting<T extends readonly _Block[] = readonly _Block[]>
 {
-    blocks: Block[];
+    blocks: T;
 }
 
 

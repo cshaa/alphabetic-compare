@@ -27,7 +27,7 @@ export function compare(a: string, b: string, langOrConf: ISO_639_1 | Partial<Co
         config = {...defaultConfig, ...langOrConf};
     }
 
-    const sorting = lang[config.language];
+    const sorting = config.customSorting || lang[config.language];
     if (!sorting) throw new TypeError(`Sorting preferences for language "${config.language}" not found.`);
 
     const NS = config.nullSorting;
@@ -40,9 +40,9 @@ export function compare(a: string, b: string, langOrConf: ISO_639_1 | Partial<Co
     let iA = 0;
     let iB = 0;
 
+    groups:
     while (true) // can you feel the excitement?
     {
-        console.log('Top while cycle');
         // Looping through groups
 
         if (iA >= lenA)
@@ -58,8 +58,6 @@ export function compare(a: string, b: string, langOrConf: ISO_639_1 | Partial<Co
 
         const sMatchA = matchSorting(aa, sorting);
         const sMatchB = matchSorting(bb, sorting);
-
-        console.log('matches: ',sMatchA, sMatchB);
 
         if (!sMatchA)
         {
@@ -108,22 +106,31 @@ export function compare(a: string, b: string, langOrConf: ISO_639_1 | Partial<Co
         let maybeCompare: Comparison = 0;
 
 
+        let lettersA: ClusterMatch[] | null = null;
+        let lettersB: ClusterMatch[] | null = null;
 
+        clusters:
         while (true) // like riding a motorcycle on a roof of a train
         {
-            console.log('Bottom while cycle');
             // Looping through letters in the group
 
-            let lettersA = Array.from(bMatchA.letters);
-            let lettersB = Array.from(bMatchB.letters);
+            if (!lettersA)
+            {
+                lettersA = Array.from(bMatchA.letters);
+                if (!ltr) lettersA.reverse();
+            }
 
-            if (!ltr) { lettersA.reverse(); lettersB.reverse(); }
+            if (!lettersB)
+            {
+                lettersB = Array.from(bMatchB.letters);
+                if (!ltr) lettersB.reverse();
+            }
 
             const clusterA = lettersA[0].cluster;
             const clusterB = lettersB[0].cluster;
 
             if (clusterA > clusterB) return 1; // A is greater
-            if (clusterB < clusterA) return -1; // B is greater
+            if (clusterA < clusterB) return -1; // B is greater
 
             if (maybeCompare === 0) // if A and B are identical so far
             {
@@ -134,13 +141,15 @@ export function compare(a: string, b: string, langOrConf: ISO_639_1 | Partial<Co
                 if (letterA < letterB) maybeCompare = -1; // B might be greater
             }
 
-            if(lettersA.length > 1 && lettersB.length > 1)
+            if (lettersA.length > 1 && lettersB.length > 1)
             {
                 lettersA.shift();
                 lettersB.shift();
             }
             else
             {
+                lettersA = lettersB = null;
+
                 iA += bMatchA.length;
                 iB += bMatchB.length;
 
@@ -148,15 +157,22 @@ export function compare(a: string, b: string, langOrConf: ISO_639_1 | Partial<Co
                 {
                     bMatchA = matchBlock(a.substr(iA), block, true)!;
                     bMatchB = matchBlock(b.substr(iB), block, true)!;
+
+                    if (!bMatchA || !bMatchB) break clusters;
                 }
                 else
                 {
-                    break;
+                    break clusters;
                 }
             }
         }
+        // end of clusters
+
+
+        if (maybeCompare * maybeCompare) return maybeCompare;
 
     }
+    // end of groups
 }
 
 
@@ -204,9 +220,9 @@ export function matchLetter(str: string, patterns: Cluster): LetterMatch | null
     return null;
 }
 
-export function matchBlock(str: string, block: Block, whole: boolean): BlockMatch | null
+export function matchBlock(str: string, block: _Block, whole: boolean): BlockMatch | null
 {
-    //console.log('matchBlock(',str,',',block,',',whole);
+    validateOrder(block.order);
 
     if (block.order === 'custom')
     return block.matchBlock(str);
@@ -293,9 +309,20 @@ export function matchSorting(str: string, sorting: Sorting): SortingMatch | null
     {
         const block = sorting.blocks[i];
         const match = matchBlock(str, block, false);
-        console.log('matchSorting(',str,'): matched', match, ' on block ', i);
         if (match) return { ...match, block: i };
     }
 
     return null;
+}
+
+
+function validateOrder(order: _Block["order"]): void
+{
+    if (order === 'ltr') return;
+    if (order === 'rtl') return;
+    if (order === 'numeric-ltr') return;
+    if (order === 'numeric-rtl') return;
+    if (order === 'custom') return;
+
+    throw new TypeError("Unsupported value for block.order: " + order);
 }

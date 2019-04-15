@@ -13,7 +13,7 @@ import
 }
 from '../src/compare';
 
-describe('the sorter', () =>
+describe('the algorithm', () =>
 {
     it('matches patterns', () =>
     {
@@ -185,8 +185,187 @@ describe('the sorter', () =>
     });
 
 
-    it('sorts english', () =>
+    it('matches sortings', () =>
     {
-        expect(compare('a', 'b', 'en')).equals(-1);
+        const sorting: Sorting = {
+            blocks: [
+                {
+                    order: 'ltr',
+                    letters: ['a', 'b']
+                },
+                {
+                    order: 'numeric-ltr',
+                    letters: ['b', 'c'],
+                    decimalSeparator: '.'
+                }
+            ]
+        };
+
+        expect( matchSorting('dabc', sorting) ).equals( null );
+
+        expect( matchSorting('abc', sorting) ).deep.equals(<SortingMatch>{
+            incomplete: true,
+            length: 1,
+            block: 0,
+            decimalSeparatorIndex: null,
+            letters: [
+                { cluster: 0, letter: 0, length: 1 }
+            ]
+        });
+
+        expect( matchSorting('bca', sorting) ).deep.equals(<SortingMatch>{
+            incomplete: true,
+            length: 1,
+            block: 0,
+            decimalSeparatorIndex: null,
+            letters: [
+                { cluster: 1, letter: 0, length: 1 }
+            ]
+        });
+
+        expect( matchSorting('cba', sorting) ).deep.equals(<SortingMatch>{
+            incomplete: true,
+            length: 1,
+            block: 1,
+            decimalSeparatorIndex: null,
+            letters: [
+                { cluster: 1, letter: 0, length: 1 }
+            ]
+        });
+
+        expect( matchSorting('.b', sorting) ).deep.equals(<SortingMatch>{
+            incomplete: false,
+            length: 2,
+            block: 1,
+            decimalSeparatorIndex: -1,
+            letters: [
+                { cluster: 0, letter: 0, length: 1 }
+            ]
+        });
+
+
+
+        const sorting2: Sorting<NonNumericBlock[]> = {
+            blocks: [
+                {
+                    order: 'ltr',
+                    letters: [...'abc']
+                },
+                {
+                    order: 'ltr',
+                    letters: [...'xyz']
+                }
+            ]
+        };
+
+        expect( matchSorting('c', sorting2)!.block ).equals(0);
     });
+
+
+    it('compares ltr text', () =>
+    {
+        const sorting: Sorting<NonNumericBlock[]> = {
+            blocks: [
+                {
+                    order: 'ltr',
+                    letters: [...'abc', ['d','đ']]
+                },
+                {
+                    order: 'ltr',
+                    letters: [...'123']
+                }
+            ]
+        };
+
+        const config: Partial<Config> = {
+            customSorting: sorting
+        };
+
+        expect( compare('c', '1', config) ).equals(-1);
+        expect( compare('1', 'c', config) ).equals( 1);
+        expect( compare('1', '1', config) ).equals( 0);
+
+        expect( compare('a', 'b', config) ).equals(-1);
+        expect( compare('b', 'a', config) ).equals( 1);
+        expect( compare('a', 'a', config) ).equals( 0);
+
+        expect( compare('d', 'đ', config) ).equals(-1);
+        expect( compare('đ', 'd', config) ).equals( 1);
+        expect( compare('d', 'd', config) ).equals( 0);
+
+        expect( compare('aba', 'a1a', config) ).equals(-1);
+        expect( compare('a1a', 'aba', config) ).equals( 1);
+        expect( compare('a1a', 'a1a', config) ).equals( 0);
+
+        expect( compare('aba', 'aca', config) ).equals(-1);
+        expect( compare('aca', 'aba', config) ).equals( 1);
+        expect( compare('aba', 'aba', config) ).equals( 0);
+
+        expect( compare('ada', 'ađa', config) ).equals(-1);
+        expect( compare('ađa', 'ada', config) ).equals( 1);
+        expect( compare('ada', 'ada', config) ).equals( 0);
+
+        expect( compare('ađa', 'adb', config) ).equals(-1);
+        expect( compare('adb', 'ađa', config) ).equals( 1);
+
+        expect( compare('ađ1', 'ad2', config) ).equals( 1);
+        expect( compare('ad2', 'ađ1', config) ).equals(-1);
+    });
+
+
+    it('compares ltr numbers', () =>
+    {
+        const sorting: Sorting<[NumericBlock, NonNumericBlock]> = {
+            blocks: [
+                {
+                    order: 'numeric-ltr',
+                    letters: [...'0123'],
+                    decimalSeparator: '.',
+                    ignore: ','
+                },
+                {
+                    order: 'ltr',
+                    letters: ['a']
+                }
+            ]
+        };
+
+        const config: Partial<Config> = {
+            customSorting: sorting
+        };
+
+        expect( compare('1', 'a', config) ).equals(-1);
+        expect( compare('a', '1', config) ).equals( 1);
+        expect( compare('1', '1', config) ).equals( 0);
+
+        expect( compare('1', '2', config) ).equals(-1);
+        expect( compare('2', '1', config) ).equals( 1);
+
+        expect( compare('2', '10', config) ).equals(-1);
+        expect( compare('10', '2', config) ).equals( 1);
+
+
+        expect( compare('122', '123', config) ).equals(-1);
+        expect( compare('123', '122', config) ).equals( 1);
+
+
+        expect( compare('2.', '10',   config) ).equals(-1);
+        expect( compare('10', '2.',   config) ).equals( 1);
+        expect( compare('2.1', '10',  config) ).equals(-1);
+        expect( compare('10', '2.1',  config) ).equals( 1);
+        expect( compare('2.12', '10', config) ).equals(-1);
+        expect( compare('10', '2.12', config) ).equals( 1);
+
+
+        expect( compare('2000.000000', '1,233,011.123', config) ).equals(-1);
+        expect( compare('1,233,011.123', '2000.000000', config) ).equals( 1);
+
+
+    });
+
+    it('is friggin cool', ()=>
+    {
+        console.log( 'HUSTyYY:', compare('bác', 'bač', 'cs') )
+    })
+
 });
