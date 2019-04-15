@@ -14,7 +14,7 @@ interface Config
      * Note that not all languages are supported. If you want to do custom
      * sorting, use the `customSorting` option.
      */
-    language: ISO_639_1,
+    language: string,
 
     /**
      * Markup description of your own sorting. To understand how it works,
@@ -22,7 +22,13 @@ interface Config
      * functioning sorter for a new language, consider making a PR on the
      * project's repository: https://github.com/m93a/alphabetic-compare
      */
-    customSorting?: Sorting
+    customSorting?: Sorting,
+
+    /**
+     * Some environments support the Intl object. Should it be used?
+     * (0) no, (1) as a fallback, (2) primarilly
+     */
+    allowIntl: 0 | 1 | 2
 }
 
 

@@ -6,16 +6,19 @@
   "repository": "git@github.com:m93a/alphabetic-compare.git",
   "author": "m93a <m93a.cz@gmail.com>",
   "license": "MIT",
+  "keywords": [
+    "alphabetical order", "alphabetization", "lexicographical order",
+    "language-specific ordering conventions", "collation", "sorting",
+    "numeric order"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "npm-run-all lint unit-test",
     "lint": "tslint --project .",
     "unit-test": "mocha -r ts-node/register test/*.ts"
   },
-  "dependencies": {
-    "@meta-utils/types": "^1.0.1"
-  },
   "devDependencies": {
+    "@meta-utils/types": "^1.0.1",
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.6",
     "@types/node": "^11.13.4",

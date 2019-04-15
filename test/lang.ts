@@ -12,7 +12,7 @@ import
 from '../src/compare';
 
 
-let lang: ISO_639_1;
+let lang: string;
 
 function expectSorted(msg: string, arr: string[])
 {

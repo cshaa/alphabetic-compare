@@ -363,9 +363,4 @@ describe('the algorithm', () =>
 
     });
 
-    it('is friggin cool', ()=>
-    {
-        console.log( 'HUSTyYY:', compare('bác', 'bač', 'cs') )
-    })
-
 });

@@ -4,12 +4,13 @@ import { lang } from './lang';
 const defaultConfig: Config =
 {
     language: 'en',
-    nullSorting: 0
+    nullSorting: 0,
+    allowIntl: 1
 }
 
 export function compare(a: string, b: string, config: Partial<Config>): Comparison;
-export function compare(a: string, b: string, language: ISO_639_1    ): Comparison;
-export function compare(a: string, b: string, langOrConf: ISO_639_1 | Partial<Config>): Comparison
+export function compare(a: string, b: string, language: string    ): Comparison;
+export function compare(a: string, b: string, langOrConf: string | Partial<Config>): Comparison
 {
     // Setup
 
@@ -27,7 +28,17 @@ export function compare(a: string, b: string, langOrConf: ISO_639_1 | Partial<Co
         config = {...defaultConfig, ...langOrConf};
     }
 
-    const sorting = config.customSorting || lang[config.language];
+    let sorting: Sorting;
+    if (config.customSorting) sorting = config.customSorting;
+    else sorting = lang[config.language as ISO_639_1];
+
+    if ( !config.customSorting && Intl )
+    if ( config.allowIntl === 2 || config.allowIntl === 1 && !sorting )
+    {
+        let locales = Intl.Collator.supportedLocalesOf(config.language);
+        if (locales.length) return Intl.Collator(locales[0], {numeric: true}).compare(a, b) as Comparison;
+    }
+
     if (!sorting) throw new TypeError(`Sorting preferences for language "${config.language}" not found.`);
 
     const NS = config.nullSorting;
