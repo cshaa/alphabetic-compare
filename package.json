@@ -1,6 +1,6 @@
 {
   "name": "alphabetic-compare",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Checks whether two strings are in alphabetical order, with support for natural sort and national quirks",
   "main": "bin/index.js",
   "repository": "git@github.com:m93a/alphabetic-compare.git",
