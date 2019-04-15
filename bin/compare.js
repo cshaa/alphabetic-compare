@@ -32,11 +32,12 @@ function compare(a, b, langOrConf) {
         sorting = config.customSorting;
     else
         sorting = lang_1.lang[config.language];
-    if ((config.allowIntl === 2 || config.allowIntl === 1 && !sorting) && Intl) {
-        var locales = Intl.Collator.supportedLocalesOf(config.language);
-        if (locales.length)
-            return Intl.Collator(locales[0]).compare(a, b);
-    }
+    if (!config.customSorting && Intl)
+        if (config.allowIntl === 2 || config.allowIntl === 1 && !sorting) {
+            var locales = Intl.Collator.supportedLocalesOf(config.language);
+            if (locales.length)
+                return Intl.Collator(locales[0], { numeric: true }).compare(a, b);
+        }
     if (!sorting)
         throw new TypeError("Sorting preferences for language \"" + config.language + "\" not found.");
     var NS = config.nullSorting;

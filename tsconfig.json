@@ -10,8 +10,10 @@
         "lib": ["es6"],
         "downlevelIteration": true,
 
+        "declaration": true,
         "removeComments": true,
         "sourceMap": true,
+        "declarationMap": true,
         
         "strict": true
     }
