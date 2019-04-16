@@ -1,3 +1,4 @@
+/// <reference path="./types.ts" />
 
 import { compare } from './compare';
 export default compare;

@@ -3,7 +3,7 @@
 
     "compilerOptions": {
         "moduleResolution": "classic",
-        "outDir": "./bin",
+        "outDir": "./dist",
 
         "module": "commonjs",
 

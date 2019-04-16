@@ -1,3 +1,4 @@
+/// <reference path="./types.ts" />
 
 import { lang } from './lang';
 

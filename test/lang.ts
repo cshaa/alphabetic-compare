@@ -1,3 +1,5 @@
+/// <reference path="../src/types.ts" />
+
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 

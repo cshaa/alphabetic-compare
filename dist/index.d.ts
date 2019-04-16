@@ -1,3 +1,4 @@
+/// <reference path="types.d.ts" />
 import { compare } from './compare';
 export default compare;
 export declare type Configuration = Config;

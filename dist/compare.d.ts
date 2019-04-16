@@ -1,3 +1,4 @@
+/// <reference path="types.d.ts" />
 export declare function compare(a: string, b: string, config: Partial<Config>): Comparison;
 export declare function compare(a: string, b: string, language: string): Comparison;
 export declare function matchPattern(str: string, pattern: Letter): PatternMatch | null;

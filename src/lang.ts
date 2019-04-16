@@ -1,4 +1,4 @@
-
+/// <reference path="./types.ts" />
 
 // English
 
