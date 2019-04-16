@@ -1,51 +1,51 @@
-declare type ISO_639_1 = 'en' | 'cs' | 'sk';
-interface Config {
+export declare type ISO_639_1 = 'en' | 'cs' | 'sk';
+export interface Config {
     nullSorting: Comparison;
     language: string;
     customSorting?: Sorting;
     allowIntl: 0 | 1 | 2;
 }
-declare type Comparison = -1 | 0 | 1;
-declare type Letter = string | RegExp;
-declare type Cluster = Letter | readonly Letter[];
-declare type List = readonly Cluster[];
-interface CommonBlock {
+export declare type Comparison = -1 | 0 | 1;
+export declare type Letter = string | RegExp;
+export declare type Cluster = Letter | readonly Letter[];
+export declare type List = readonly Cluster[];
+export interface CommonBlock {
     letters: List;
     separator?: Cluster;
     ignore?: Cluster;
 }
-interface NonNumericBlock extends CommonBlock {
+export interface NonNumericBlock extends CommonBlock {
     order: 'ltr' | 'rtl';
 }
-interface NumericBlock extends CommonBlock {
+export interface NumericBlock extends CommonBlock {
     order: 'numeric-ltr' | 'numeric-rtl';
     decimalSeparator?: Cluster;
 }
-interface CustomBlock {
+export interface CustomBlock {
     order: 'custom';
     matchBlock: (str: string) => BlockMatch;
     compareBlocks: (str1: string, str2: string) => -1 | 0 | 1;
 }
-declare type _Block = NonNumericBlock | NumericBlock | CustomBlock;
-interface Sorting<T extends readonly _Block[] = readonly _Block[]> {
+export declare type Block = NonNumericBlock | NumericBlock | CustomBlock;
+export interface Sorting<T extends readonly Block[] = readonly Block[]> {
     blocks: T;
 }
-interface PatternMatch {
+export interface PatternMatch {
     length: number;
 }
-interface LetterMatch extends PatternMatch {
+export interface LetterMatch extends PatternMatch {
     letter: number;
 }
-interface ClusterMatch extends LetterMatch {
+export interface ClusterMatch extends LetterMatch {
     cluster: number;
 }
-interface BlockMatch {
+export interface BlockMatch {
     incomplete: boolean;
     length: number;
     letters: ReadonlyArray<ClusterMatch>;
     decimalSeparatorIndex: number | null;
 }
-interface SortingMatch extends BlockMatch {
+export interface SortingMatch extends BlockMatch {
     block: number;
 }
 //# sourceMappingURL=types.d.ts.map

@@ -1,4 +1,12 @@
-/// <reference path="../src/types.ts" />
+import {
+    Block,
+    BlockMatch,
+    Config,
+    NonNumericBlock,
+    NumericBlock,
+    Sorting,
+    SortingMatch
+} from "../src/types";
 
 import { describe, it } from 'mocha';
 import { expect } from 'chai';

@@ -1,4 +1,17 @@
-/// <reference path="./types.ts" />
+import {
+    Block,
+    BlockMatch,
+    Cluster,
+    ClusterMatch,
+    Comparison,
+    Config,
+    ISO_639_1,
+    Letter,
+    LetterMatch,
+    PatternMatch,
+    Sorting,
+    SortingMatch
+} from "./types";
 
 import { lang } from './lang';
 
@@ -232,7 +245,7 @@ export function matchLetter(str: string, patterns: Cluster): LetterMatch | null
     return null;
 }
 
-export function matchBlock(str: string, block: _Block, whole: boolean): BlockMatch | null
+export function matchBlock(str: string, block: Block, whole: boolean): BlockMatch | null
 {
     validateOrder(block.order);
 
@@ -328,7 +341,7 @@ export function matchSorting(str: string, sorting: Sorting): SortingMatch | null
 }
 
 
-function validateOrder(order: _Block["order"]): void
+function validateOrder(order: Block["order"]): void
 {
     if (order === 'ltr') return;
     if (order === 'rtl') return;

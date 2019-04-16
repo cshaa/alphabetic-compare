@@ -1,7 +1,7 @@
 
-type ISO_639_1 = 'en' | 'cs' | 'sk';
+export type ISO_639_1 = 'en' | 'cs' | 'sk';
 
-interface Config
+export interface Config
 {
     /**
      * Should nulls (ie. letters that have no defined sorting) be sorted
@@ -33,13 +33,13 @@ interface Config
 
 
 
-type Comparison = -1 | 0 | 1;
+export type Comparison = -1 | 0 | 1;
 
-type Letter = string | RegExp;
-type Cluster = Letter | readonly Letter[];
-type List = readonly Cluster[];
+export type Letter = string | RegExp;
+export type Cluster = Letter | readonly Letter[];
+export type List = readonly Cluster[];
 
-interface CommonBlock
+export interface CommonBlock
 {
     letters: List;
 
@@ -48,54 +48,54 @@ interface CommonBlock
     ignore?: Cluster;
 }
 
-interface NonNumericBlock
+export interface NonNumericBlock
 extends CommonBlock
 {
     order: 'ltr' | 'rtl';
 }
 
-interface NumericBlock
+export interface NumericBlock
 extends CommonBlock
 {
     order: 'numeric-ltr' | 'numeric-rtl';
     decimalSeparator?: Cluster;
 }
 
-interface CustomBlock
+export interface CustomBlock
 {
     order: 'custom';
     matchBlock: (str: string) => BlockMatch;
     compareBlocks: (str1: string, str2: string) => -1 | 0 | 1;
 }
 
-type _Block = NonNumericBlock | NumericBlock | CustomBlock;
+export type Block = NonNumericBlock | NumericBlock | CustomBlock;
 
-interface Sorting<T extends readonly _Block[] = readonly _Block[]>
+export interface Sorting<T extends readonly Block[] = readonly Block[]>
 {
     blocks: T;
 }
 
 
 
-interface PatternMatch
+export interface PatternMatch
 {
     length: number;
 }
 
-interface LetterMatch
+export interface LetterMatch
 extends PatternMatch
 {
     letter: number;
 }
 
-interface ClusterMatch
+export interface ClusterMatch
 extends LetterMatch
 {
     cluster: number;
 }
 
 
-interface BlockMatch
+export interface BlockMatch
 {
     incomplete: boolean;
 
@@ -109,7 +109,7 @@ interface BlockMatch
     decimalSeparatorIndex: number | null;
 }
 
-interface SortingMatch
+export interface SortingMatch
 extends BlockMatch
 {
     block: number;

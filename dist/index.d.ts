@@ -1,8 +1,8 @@
-/// <reference path="types.d.ts" />
+import { Config, Block, NonNumericBlock, NumericBlock, CustomBlock, Cluster } from "./types";
 import { compare } from './compare';
 export default compare;
 export declare type Configuration = Config;
-export declare type Block = _Block;
+export { Block };
 export declare namespace Block {
     type NonNumeric = NonNumericBlock;
     type Numeric = NumericBlock;

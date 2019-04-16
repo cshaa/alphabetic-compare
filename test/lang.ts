@@ -1,4 +1,4 @@
-/// <reference path="../src/types.ts" />
+import { Block } from "../src/types";
 
 import { describe, it } from 'mocha';
 import { expect } from 'chai';

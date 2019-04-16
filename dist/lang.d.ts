@@ -1,4 +1,4 @@
-/// <reference path="types.d.ts" />
+import { Sorting, ISO_639_1 } from "./types";
 export declare const lang: {
     [code in ISO_639_1]: Sorting;
 };

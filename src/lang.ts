@@ -1,4 +1,4 @@
-/// <reference path="./types.ts" />
+import { Sorting, NonNumericBlock, NumericBlock, ISO_639_1 } from "./types";
 
 // English
 
