@@ -23,7 +23,7 @@ To compare strings in supported languages, you can use this method:
 ```typescript
 function compare(a: string, b: string, lang: ISO_639_1): -1 | 0 | 1
 ```
-If string `a` should be sorted above `b`, you get `-1`. If it sould be sorted under, you get `1`. `0` means the strings are alphabetically identical, but they might still differ in non-alphabetical symbols like the apostrophe.
+If string `a` should be sorted above `b`, you get `-1`. If it sould be sorted below, you get `1`. `0` means the strings are alphabetically identical, but they might still differ in non-alphabetical symbols like the apostrophe.
 
 ## Advanced usage
 If you want to customize the sorting algorithm, instead of language you can pass settings to the method:
@@ -38,7 +38,7 @@ interface Configuration {
 function compare(a: string, b: string, conf: Configuration): -1 | 0 | 1
 ```
 
-Null sorting lets you decide what happens with unknown symbols. With `-1` they will be sorted above everything else, with `1` they will be sorted under everything else and with `0` (default) they will be ignored.
+Null sorting lets you decide what happens with unknown symbols. With `-1` they will be sorted above everything else, with `1` they will be sorted below everything else and with `0` (default) they will be ignored.
 
 Intl fallback can be controlled by `allowIntl`. Value `0` means it won't be ever used, `1` (default) means use Intl if there's no local rule for the language, `2` means use Intl whenever it's possible.
 
