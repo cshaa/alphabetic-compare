@@ -3,7 +3,11 @@
   "version": "1.1.3",
   "description": "Checks whether two strings are in alphabetical order, with support for natural sort and national quirks",
   "main": "dist/index.js",
-  "repository": "git@github.com:m93a/alphabetic-compare.git",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:m93a/alphabetic-compare.git"
+  },
+  "homepage": "https://github.com/m93a/alphabetic-compare",
   "author": "m93a <m93a.cz@gmail.com>",
   "license": "MIT",
   "keywords": [
